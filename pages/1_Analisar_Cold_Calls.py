@@ -15,6 +15,11 @@ st.set_page_config(layout="wide")
 st.title("📞 Análise de Cold Calls - Conversa Híbrida")
 st.markdown("**Analise cold calls baseado na metodologia Conversa Híbrida (6 etapas)**")
 
+# Verificar se a API key está configurada
+if not OPENAI_API_KEY:
+    st.error("⚠️ **API Key não configurada!** Por favor, configure a variável de ambiente OPENAI_API_KEY no Streamlit Cloud.")
+    st.stop()
+
 # Seletor de idioma
 col_lang, col_space = st.columns([1, 3])
 with col_lang:

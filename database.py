@@ -4,7 +4,60 @@ from config import DATABASE_PATH
 
 def get_connection():
     """Retorna uma conexão com o banco de dados."""
-    return sqlite3.connect(DATABASE_PATH)
+    conn = sqlite3.connect(DATABASE_PATH)
+    # Criar tabelas se não existirem
+    create_tables_if_not_exist(conn)
+    return conn
+
+def create_tables_if_not_exist(conn):
+    """Cria as tabelas se elas não existirem."""
+    cursor = conn.cursor()
+    
+    # Tabela de BDRs
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS bdrs (
+        id INTEGER PRIMARY KEY,
+        nome TEXT NOT NULL UNIQUE
+        )
+    ''')
+    
+    # Tabela de análises 1:1
+    cursor.execute(''' 
+        CREATE TABLE IF NOT EXISTS analises (
+        id INTEGER PRIMARY KEY,
+        bdr_id INTEGER,
+        data TEXT NOT NULL,
+        resumo TEXT,
+        metas TEXT,
+        FOREIGN KEY (bdr_id) REFERENCES bdrs (id)
+        )
+    ''')
+    
+    # Tabela de cold calls
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS cold_calls (
+        id INTEGER PRIMARY KEY,
+        bdr_id INTEGER,
+        data TEXT NOT NULL,
+        prospect_nome TEXT,
+        prospect_empresa TEXT,
+        -- Conversa Híbrida - 6 Etapas
+        warmer_score INTEGER,
+        reframe_score INTEGER,
+        rational_drowning_score INTEGER,
+        emotional_impact_score INTEGER,
+        new_way_score INTEGER,
+        your_solution_score INTEGER,
+        -- Analysis Content
+        analise_completa TEXT,
+        pontos_atencao TEXT,
+        recomendacoes TEXT,
+        insight_comercial TEXT,
+        FOREIGN KEY (bdr_id) REFERENCES bdrs (id)
+        )
+    ''')
+    
+    conn.commit()
 
 def get_bdrs():
     """Busca todos os BDRs cadastrados no banco de dados."""

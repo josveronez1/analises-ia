@@ -15,6 +15,11 @@ st.title("🎯 Sistema de Análise de 1:1s")
 st.markdown("**Analise reuniões 1:1 com seus BDRs usando IA para extrair insights valiosos.**")
 st.info("💡 **Novo!** Agora você também pode analisar Cold Calls na página dedicada!")
 
+# Verificar se a API key está configurada
+if not OPENAI_API_KEY:
+    st.error("⚠️ **API Key não configurada!** Por favor, configure a variável de ambiente OPENAI_API_KEY no Streamlit Cloud.")
+    st.stop()
+
 bdrs_list = get_bdrs()
 
 if not bdrs_list:
