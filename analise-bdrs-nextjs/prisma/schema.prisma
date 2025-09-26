@@ -1,0 +1,82 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model BDR {
+  id        Int      @id @default(autoincrement())
+  nome      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relacionamentos
+  coldCalls ColdCall[]
+  meetings  Meeting[]
+
+  @@map("bdrs")
+}
+
+model ColdCall {
+  id                    Int      @id @default(autoincrement())
+  bdrId                 Int
+  prospectNome          String
+  prospectEmpresa       String
+  insightComercial      String?
+  
+  // Scores da Conversa Híbrida (6 etapas)
+  warmerScore           Int
+  reframeScore          Int
+  rationalDrowningScore Int
+  emotionalImpactScore  Int
+  newWayScore           Int
+  yourSolutionScore     Int
+  
+  // Análise
+  analiseCompleta       String
+  pontosAtencao         String
+  recomendacoes         String
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relacionamentos
+  bdr BDR @relation(fields: [bdrId], references: [id], onDelete: Cascade)
+
+  @@map("cold_calls")
+}
+
+model Meeting {
+  id        Int      @id @default(autoincrement())
+  bdrId     Int
+  dataReuniao DateTime
+  resumo    String
+  metas     String
+  
+  // Scores da Conversa Híbrida (6 etapas)
+  warmerScore           Int
+  reframeScore          Int
+  rationalDrowningScore Int
+  emotionalImpactScore  Int
+  newWayScore           Int
+  yourSolutionScore     Int
+  
+  // Análise
+  analiseCompleta       String
+  pontosAtencao         String
+  recomendacoes         String
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relacionamentos
+  bdr BDR @relation(fields: [bdrId], references: [id], onDelete: Cascade)
+
+  @@map("meetings")
+}
