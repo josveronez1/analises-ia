@@ -68,3 +68,4 @@ export default function LineChart({ data, height = 320, className = '' }: LineCh
   );
 }
 
+

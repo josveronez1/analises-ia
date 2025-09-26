@@ -43,3 +43,4 @@ const FilterBar: React.FC<FilterBarProps> = ({ children, className = '' }) => {
 };
 
 export default FilterBar;
+

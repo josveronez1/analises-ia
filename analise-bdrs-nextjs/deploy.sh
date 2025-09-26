@@ -29,3 +29,4 @@ pm2 restart ecosystem.config.js
 
 echo "✅ Deploy concluído com sucesso!"
 echo "🌐 Aplicação rodando em: http://localhost:3000"
+
